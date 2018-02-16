@@ -1,0 +1,18 @@
+{
+"status": "ok",
+"totalResults": 1,
+"articles": [
+	{
+	"source": {
+		"id": "techcrunch",
+		"name": "TechCrunch"
+	},
+	"author": "Josh Constine",
+	"title": "After years of neglect, Snapchat wins in the developing world",
+	"description": "Snapchat doubled its Rest of World revenue this quarter. That's a surprise, considering CEO Evan Spiegel never seemed to care about anyone but U.S. teens...",
+	"url": "https://techcrunch.com/2018/02/06/snapchat-international/",
+	"urlToImage": "https://tctechcrunch2011.files.wordpress.com/2018/02/snapchat-international2.png",
+	"publishedAt": "2018-02-07T00:13:01Z"
+	}
+]
+}
