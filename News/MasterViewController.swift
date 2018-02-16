@@ -18,15 +18,15 @@ struct Response: Codable {
 struct Article: Codable {
     var author: String?
     var title: String?
-    var desc: String?
-    var imageUrl: String?
+    var description: String?
+    var urlToImage: String?
     var url: String?
 
     init(author: String, title: String, desc: String, imageUrl: String, url: String) {
         self.author = author
         self.title = title
-        self.desc = desc
-        self.imageUrl = imageUrl
+        self.description = desc
+        self.urlToImage = imageUrl
         self.url = url
     }
 }
@@ -72,11 +72,19 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? MasterCell
 
-        let object = objects[indexPath.row]
-        cell.textLabel!.text = object.title
-        return cell
+        let article = objects[indexPath.row]
+        cell?.titleLebal!.text = article.title
+        cell?.detailLabel?.text = article.description
+
+        guard let imagePath = article.urlToImage, let url = URL(string: imagePath) else { return cell! }
+
+        downloadImage(from: url) { (image) in
+            cell?.masterImageView?.image = image
+        }
+
+        return cell!
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -87,5 +95,26 @@ class MasterViewController: UITableViewController {
         }
         present(SFSafariViewController(url: url), animated: true)
     }
+    
+
+    func downloadImage(from url: URL, completion:@escaping (UIImage?) -> ()) {
+
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            DispatchQueue.main.async {
+                guard let data = data else {
+                    completion(nil)
+                    return
+                }
+                completion( UIImage(data: data))
+            }
+        }.resume()
+    }
 }
 
+
+
+class MasterCell: UITableViewCell {
+    @IBOutlet var titleLebal: UILabel!
+    @IBOutlet var detailLabel: UILabel!
+    @IBOutlet var masterImageView: UIImageView?
+}
